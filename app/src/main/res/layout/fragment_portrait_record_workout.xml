@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/portraitView"
+    android:name="vytran.cs175.sjsu.alphafitnessapp.PortraitRecordWorkout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#e9e3f4">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Record Workout"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="35dp"
+            android:gravity="center"
+            android:layout_marginLeft="17dp"/>
+
+        <ImageButton
+            android:id="@+id/userProfileID"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_marginLeft="23dp"
+            android:src= "@drawable/user_person_users_customer_folder_face"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#444"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:background="#f4f1fa">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DISTANCE"/>
+            <TextView
+                android:id="@+id/workoutDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textSize="40dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KM"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DURATION"/>
+            <TextView
+                android:id="@+id/workoutDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00:00"
+                android:textSize="40dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minutes"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center">
+        <Button
+            android:id="@+id/RecordButton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="Start Workout"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:background="#c0aee0"/>
+    </LinearLayout>
+</LinearLayout>

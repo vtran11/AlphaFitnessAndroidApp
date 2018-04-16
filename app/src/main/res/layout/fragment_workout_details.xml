@@ -1,0 +1,144 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/landscapeView"
+    android:orientation="vertical"
+    android:name="vytran.cs175.sjsu.alphafitnessapp.WorkoutDetails">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textAlignment="center"
+            android:text="Workout Details"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="29dp" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="56dp"
+            android:background="#444"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:background="#dfdff2">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AVG"
+                    android:textSize="17dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:id="@+id/averageTime"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0:00"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:textSize="37dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="min/km"
+                    android:textSize="14dp"
+                    android:layout_alignBottom="@+id/averageTime"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="56dp"
+                android:background="#444"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MAX"
+                        android:textSize="17dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"/>
+                    <TextView
+                        android:id="@+id/maxTime"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0:00"
+                        android:layout_centerHorizontal="true"
+                        android:textAlignment="center"
+                        android:textSize="20dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="min/km"
+                        android:textSize="14dp"
+                        android:layout_alignBottom="@+id/maxTime"
+                        android:layout_alignParentEnd="true"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="#444"/>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MIN"
+                        android:textSize="17dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"/>
+                    <TextView
+                        android:id="@+id/minTime"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0:00"
+                        android:layout_centerHorizontal="true"
+                        android:textAlignment="center"
+                        android:textSize="20dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="min/km"
+                        android:textSize="14dp"
+                        android:layout_alignBottom="@+id/minTime"
+                        android:layout_alignParentEnd="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="#444"/>
+
+</LinearLayout>

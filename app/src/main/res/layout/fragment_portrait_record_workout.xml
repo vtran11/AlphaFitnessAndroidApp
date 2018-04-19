@@ -107,6 +107,7 @@
             android:text="Start Workout"
             android:paddingEnd="20dp"
             android:paddingStart="20dp"
-            android:background="#c0aee0"/>
+            android:background="#c0aee0"
+            android:onClick="buttonStartWorkoutCLicked"/>
     </LinearLayout>
 </LinearLayout>

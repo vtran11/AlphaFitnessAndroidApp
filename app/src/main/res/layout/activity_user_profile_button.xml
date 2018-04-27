@@ -8,19 +8,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="67dp"
+        android:layout_height="75dp"
         android:orientation="horizontal"
         android:background="#ece7f6">
 
         <ImageButton
             android:id="@+id/userProfileID"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="19dp"
             android:src= "@drawable/user_person_users_customer_folder_face"/>
 
         <EditText
+            android:id="@+id/userName_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:hint="User's Name"
@@ -32,7 +33,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:orientation="horizontal"
         android:layout_weight="2">
         <LinearLayout
@@ -44,11 +45,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gender: "
-                android:textSize="20dp"
+                android:textSize="21dp"
                 android:layout_marginLeft="15dp"/>
             <Spinner
-                android:id="@+id/userGender"
-                android:layout_width="80dp"
+                android:id="@+id/userGender_view"
+                android:layout_width="85dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
@@ -61,10 +62,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weight: "
-                android:textSize="20dp"
+                android:textSize="21dp"
                 android:layout_marginLeft="15dp"/>
             <EditText
-                android:id="@+id/userWeight"
+                android:id="@+id/userWeight_view"
                 android:layout_height="wrap_content"
                 android:background="#EED2EE"
                 android:layout_width="60dp"/>
@@ -72,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="lbs"
-                android:textSize="20dp"
+                android:textSize="21dp"
                 android:layout_marginLeft="5dp"/>
         </LinearLayout>
     </LinearLayout>
@@ -84,22 +85,23 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:text="Average/Weekly"
-        android:textSize="23dp"
+        android:textSize="25dp"
         android:background="#dfdff2"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Distance"
             android:textSize="20dp"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
         <TextView
+            android:id="@+id/weeklyDistance_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -114,7 +116,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -123,6 +125,7 @@
             android:textSize="20dp"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/weeklyTime_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -137,7 +140,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -146,6 +149,7 @@
             android:textSize="20dp"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/weeklyWorkoutCount_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -160,7 +164,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -169,6 +173,7 @@
             android:textSize="20dp"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/weeklyCalories_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -183,14 +188,14 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:text="All Time"
         android:textSize="23dp"
         android:background="#dfdff2"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -199,6 +204,7 @@
             android:textSize="20dp"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/totalDistance_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -213,7 +219,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -222,6 +228,7 @@
             android:textSize="20dp"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/totalTime_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -236,7 +243,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -245,6 +252,7 @@
             android:textSize="20dp"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/totalWorkoutCount_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -259,9 +267,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/totalCalories_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Calories Burned"

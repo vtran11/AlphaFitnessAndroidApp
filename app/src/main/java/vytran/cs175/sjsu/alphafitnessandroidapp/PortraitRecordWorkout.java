@@ -19,11 +19,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
+import android.util.Log;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import android.graphics.Color;
+
 import java.util.ArrayList;
 
 import android.Manifest;
@@ -36,15 +38,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 
 import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationListener;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 
 import android.os.SystemClock;
 
@@ -57,15 +55,17 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
 
     private WatchTime watchTime;
     private long timeInMilliseconds = 0L;
-    private Handler handler;
 
-    long startTime, stopTime = 0L;
+    private Handler handler;
+    private UserWorkoutData userData;
+    private DBHandler database;
+
     private GoogleMap mMap;
     private Context context;
     private boolean isRunning = false;
 
     private ArrayList<LatLng> locationsList;
-
+    LocationManager myLocationManager;
 
     private static int REQUEST_FINE_LOCATION = 0;
     private static int REQUEST_COARSE_LOCATION = 1;
@@ -73,19 +73,34 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View portraitView = inflater.inflate(R.layout.fragment_portrait_record_workout, container, false);
-
-        context = portraitView.getContext();
-        mapView = (MapView) portraitView.findViewById(R.id.map);
-        mapView .onCreate(savedInstanceState);
-        mapView .onResume();
-        mapView .getMapAsync(this);
+        final View portraitView = inflater.inflate(R.layout.fragment_portrait_record_workout, container, false);
 
         handler = new Handler();
         watchTime = new WatchTime();
 
         workout_distance = (TextView) portraitView.findViewById(R.id.workoutDistance);
         updateTime = (TextView) portraitView.findViewById(R.id.workoutDuration);
+
+
+        //----------------- Display GoogleMap View ----------------
+        context = portraitView.getContext();
+        mapView = (MapView) portraitView.findViewById(R.id.map);
+        mapView .onCreate(savedInstanceState);
+        mapView .onResume();
+
+        if (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            mapView .getMapAsync(this);
+        }
+
+        // myLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        // myLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 200, 10, locationGPS);
+
 
         //-------set click listener for Start WOrkout Button---------
         workoutButton = (Button) portraitView.findViewById(R.id.RecordButton);
@@ -94,11 +109,13 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
             public void onClick(View view) {
                 if(!isRunning) {
                     workoutButton.setText("Stop Workout");
-                    startTime = SystemClock.uptimeMillis();
                     isRunning = true;
                     workoutButton.setBackgroundColor(Color.RED);
+                    //startTimer(view);
                     watchTime.setStartTime(SystemClock.uptimeMillis());
                     handler.postDelayed(updateTimerRunnable, 20);
+                    //handler.removeCallbacks();
+                    //handler.postDelayed(locationChangedRunnable, 20);
                 }
 
                 else {
@@ -109,11 +126,13 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                     resetTimer(view);
                     watchTime.addStoredTime(timeInMilliseconds);
                     handler.removeCallbacks(updateTimerRunnable);
+                    //handler.postDelayed(, 0);
+                    //handler.removeCallbacks(locationChangedRunnable);
                 }
             }
         });
 
-                //-------set click listener for User Profile Button---------
+        //-------set click listener for User Profile Button---------
         ImageButton userProfileButton = (ImageButton) portraitView.findViewById(R.id.userProfileID);
         userProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +170,7 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_COARSE_LOCATION);
-            }
+        }
         else
             mMap.setMyLocationEnabled(true);
 
@@ -165,10 +184,10 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
 
 
 
-    //---------------------- Watch time handler ----------------------------
+    //---------------------- Workout time handler ----------------------------
     public void startTimer(View view){
         watchTime.setStartTime(SystemClock.uptimeMillis());
-        handler.postDelayed(updateTimerRunnable, 20);
+        handler.postDelayed(updateTimerRunnable, 0);
     }
 
     private Runnable updateTimerRunnable = new Runnable() {
@@ -181,15 +200,17 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
             int time = (int) (watchTime.getTimeUpdate() / 1000);
 
             //compute minutes, seconds, and milliseconds
-            int minutes = time/60;
+            int all_minutes = time/60;
+
+            int hours = all_minutes/60;
+            int minutes = all_minutes - hours*60;
             int seconds = time % 60;
-            int hours = minutes/60;
             int milliseconds = (int) (watchTime.getTimeUpdate() % 1000);
 
             //display the time in the tex view
             updateTime.setText(String.format("%02d", hours) + ":" +
                     String.format("%02d", minutes) + ":"
-            + String.format("%02d", seconds));
+                    + String.format("%02d", seconds));
 
             //specify no time lapse between posting
             handler.postDelayed(this, 0);
@@ -215,4 +236,77 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
     }
 
 
+    /*
+    //-------------------- GPS Sensor Listener for Workout Session ------------------
+    private Runnable locationChangedRunnable = new Runnable() {
+        @Override
+        public void run() {
+            LocationListener locationGPS = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    locationsList.add(new LatLng(latitude, longitude));
+
+                    PolylineOptions polyline = new PolylineOptions().width(4).color(Color.GREEN).geodesic(true);
+                    for(int i =0; i<locationsList.size();i++)
+                    {
+                        LatLng point = locationsList.get(i);
+                        polyline.add(point);
+                    }
+                    mMap.addPolyline(polyline);
+                }
+
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) {}
+
+                @Override
+                public void onProviderEnabled(String s) {}
+
+                @Override
+                public void onProviderDisabled(String s) {}
+            };
+            handler.postDelayed(this, 0);
+        }
+    };
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {}
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+    LocationListener locationGPS = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            locationsList.add(new LatLng(latitude, longitude));
+
+            if(isRunning) {
+                PolylineOptions polyline = new PolylineOptions().width(4).color(Color.GREEN).geodesic(true);
+                for (int i = 0; i < locationsList.size(); i++) {
+                    LatLng point = locationsList.get(i);
+                    polyline.add(point);
+                }
+                mMap.addPolyline(polyline);
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {}
+
+        @Override
+        public void onProviderEnabled(String s) {}
+
+        @Override
+        public void onProviderDisabled(String s) {}
+    };
+    */
 }
+
+
+
+
+
+

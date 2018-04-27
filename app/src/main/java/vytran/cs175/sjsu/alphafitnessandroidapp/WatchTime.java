@@ -2,6 +2,7 @@ package vytran.cs175.sjsu.alphafitnessandroidapp;
 
 /**
  * Created by ThaoVy on 4/19/18.
+ * CHeck Book Chapter 6
  */
 
 public class WatchTime {

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -17,9 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.os.Handler;
-import android.util.Log;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -29,12 +28,12 @@ import android.graphics.Color;
 import java.util.ArrayList;
 
 import android.Manifest;
-import android.net.Uri;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.SupportMapFragment;
 
 
 import android.location.Location;
@@ -67,39 +66,26 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
     private ArrayList<LatLng> locationsList;
     LocationManager myLocationManager;
 
-    private static int REQUEST_FINE_LOCATION = 0;
-    private static int REQUEST_COARSE_LOCATION = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View portraitView = inflater.inflate(R.layout.fragment_portrait_record_workout, container, false);
+        View portraitView = inflater.inflate(R.layout.fragment_portrait_record_workout, container, false);
 
         handler = new Handler();
         watchTime = new WatchTime();
+        userData = new UserWorkoutData();
+        database = new DBHandler(getActivity());
 
         workout_distance = (TextView) portraitView.findViewById(R.id.workoutDistance);
         updateTime = (TextView) portraitView.findViewById(R.id.workoutDuration);
 
 
         //----------------- Display GoogleMap View ----------------
-        context = portraitView.getContext();
         mapView = (MapView) portraitView.findViewById(R.id.map);
-        mapView .onCreate(savedInstanceState);
-        mapView .onResume();
-
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
-        {
-            mapView .getMapAsync(this);
-        }
-
-        // myLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        // myLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 200, 10, locationGPS);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);
 
 
         //-------set click listener for Start WOrkout Button---------
@@ -111,10 +97,8 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                     workoutButton.setText("Stop Workout");
                     isRunning = true;
                     workoutButton.setBackgroundColor(Color.RED);
-                    //startTimer(view);
                     watchTime.setStartTime(SystemClock.uptimeMillis());
                     handler.postDelayed(updateTimerRunnable, 20);
-                    //handler.removeCallbacks();
                     //handler.postDelayed(locationChangedRunnable, 20);
                 }
 
@@ -126,7 +110,6 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                     resetTimer(view);
                     watchTime.addStoredTime(timeInMilliseconds);
                     handler.removeCallbacks(updateTimerRunnable);
-                    //handler.postDelayed(, 0);
                     //handler.removeCallbacks(locationChangedRunnable);
                 }
             }
@@ -151,34 +134,31 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
     {
         mMap = googleMap;
 
-        LocationManager locationManager;
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        String locationProvider = locationManager.getBestProvider(criteria,true);
-
         if (ActivityCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_COARSE_LOCATION);
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
-        else
-            mMap.setMyLocationEnabled(true);
 
+        mMap.setMyLocationEnabled(true);
 
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = locationManager.getBestProvider(criteria,true);
         Location location = locationManager.getLastKnownLocation(locationProvider);
-        LatLng here = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(here).title("Start"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(here));
+
+        if(location != null) {
+               LatLng here = new LatLng(location.getLatitude(), location.getLongitude());
+               mMap.addMarker(new MarkerOptions().position(here).title("Start"));
+               mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(here, 17));
+        }
+
     }
 
 
@@ -235,8 +215,8 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                 + String.format("%02d", seconds));
     }
 
+/*
 
-    /*
     //-------------------- GPS Sensor Listener for Workout Session ------------------
     private Runnable locationChangedRunnable = new Runnable() {
         @Override
@@ -302,7 +282,7 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
         @Override
         public void onProviderDisabled(String s) {}
     };
-    */
+*/
 }
 
 

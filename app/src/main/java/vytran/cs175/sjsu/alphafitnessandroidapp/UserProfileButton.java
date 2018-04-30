@@ -34,7 +34,7 @@ public class UserProfileButton extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_button);
-/*
+
         userName = (TextView) findViewById(R.id.userName_view);
         userGender = (Spinner) findViewById(R.id.userGender_view);
         userWeight = (TextView) findViewById(R.id.userWeight_view);
@@ -76,7 +76,7 @@ public class UserProfileButton extends AppCompatActivity {
             }
         });
         adapter.notifyDataSetChanged();
-*/
+
 
 
         //------------------- SET UP USER INFO ---------------------

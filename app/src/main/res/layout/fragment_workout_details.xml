@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/landscapeView"
     android:orientation="vertical"
-    android:name="vytran.cs175.sjsu.alphafitnessapp.WorkoutDetails">
+    android:name="vytran.cs175.sjsu.alphafitnessandroidapp.WorkoutDetails">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="min/km"
+                    android:text="miles/hr"
                     android:textSize="14dp"
                     android:layout_alignBottom="@+id/averageTime"
                     android:layout_alignParentEnd="true"/>
@@ -93,7 +93,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="min/km"
+                        android:text="miles/hr"
                         android:textSize="14dp"
                         android:layout_alignBottom="@+id/maxTime"
                         android:layout_alignParentEnd="true"/>
@@ -125,7 +125,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="min/km"
+                        android:text="miles/hr"
                         android:textSize="14dp"
                         android:layout_alignBottom="@+id/minTime"
                         android:layout_alignParentEnd="true"/>
@@ -140,5 +140,10 @@
         android:layout_width="wrap_content"
         android:layout_height="2dp"
         android:background="#444"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

@@ -8,14 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/portraitView"
-        android:name="vytran.cs175.sjsu.alphafitnessapp.PortraitRecordWorkout">
+        android:name="vytran.cs175.sjsu.alphafitnessandroidapp.PortraitRecordWorkout">
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/landscapeView"
-        android:name="vytran.cs175.sjsu.alphafitnessapp.WorkoutDetails">
+        android:name="vytran.cs175.sjsu.alphafitnessandroidapp.WorkoutDetails">
     </FrameLayout>
 
 

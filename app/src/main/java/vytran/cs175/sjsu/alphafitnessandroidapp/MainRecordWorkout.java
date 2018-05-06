@@ -25,8 +25,8 @@ public class MainRecordWorkout extends AppCompatActivity {
             fragmentTransaction.replace(android.R.id.content, portraitFragment);
         }
 
-        //hanlde landscape mode
-        else if(config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        //handle landscape mode
+        else  {
             Fragment landscapeFragment = new WorkoutDetails();
             fragmentTransaction.replace(android.R.id.content, landscapeFragment);
         }

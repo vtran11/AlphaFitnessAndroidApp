@@ -136,8 +136,9 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                     workout_distance.setText("0.0");
                     beginTime = SystemClock.uptimeMillis();
                     workoutButton.setBackgroundColor(Color.RED);
-                    watchTime.setStartTime(SystemClock.uptimeMillis());
-                    handler.postDelayed(updateTimerRunnable, 0);
+                    startTimer(view);
+                    //watchTime.setStartTime(SystemClock.uptimeMillis());
+                    //handler.postDelayed(updateTimerRunnable, 0);
                     handler.postDelayed(updateLocationRunnable, 20);
                     handler.removeCallbacks(updateDBHandler);
                 }
@@ -251,7 +252,7 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                     String.format("%02d", minutes) + ":"
                     + String.format("%02d", seconds));
 
-            workout_distance.setText(String.format(Locale.US, "%.03f", getDistance()));
+            workout_distance.setText(String.format(Locale.US, "%.03f", km_to_mile(getDistance())));
 
 
             //specify no time lapse between posting
@@ -405,13 +406,18 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
         @Override
         public void run() {
             workoutCount++;
-            float weight;
-            UserInfo user = database.getUser(1);
-            if(user.getUserWeight() >= 0) {
-                weight = user.getUserWeight();
+            float weight = 0;
+            UserInfo user;
+
+            if(database.getUser(1) != null) {
+                user = database.getUser(1);
+
+                if(user.getUserWeight() >= 0) {
+                    weight = user.getUserWeight();
+                }
+                else
+                    weight = 115;
             }
-            else
-                weight = 115;
 
             userData.setWeeklyDistance(getDistance());
             userData.setWeeklyTime(timeInMilliseconds);
@@ -422,6 +428,10 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
             handler.postDelayed(this, 300000);
         }
     };
+
+    public double km_to_mile(double km){
+        return 0.621371*km;
+    }
 
 }
 

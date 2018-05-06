@@ -35,21 +35,22 @@ public class UserProfileButton extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_button);
 
-        userName = (TextView) findViewById(R.id.userName_view);
-        userGender = (Spinner) findViewById(R.id.userGender_view);
-        userWeight = (TextView) findViewById(R.id.userWeight_view);
+        userName = (TextView) findViewById(R.id.nameEdit);
+        userGender = (Spinner) findViewById(R.id.genderSpinner);
+        userWeight = (TextView) findViewById(R.id.weightEdit);
 
-        weeklyDistance= (TextView) findViewById(R.id.weeklyDistance_view);
-        weeklyTime = (TextView) findViewById(R.id.weeklyTime_view);
-        weeklyWorkoutCount = (TextView) findViewById(R.id.weeklyWorkoutCount_view);
-        weeklyCalories = (TextView) findViewById(R.id.weeklyCalories_view);
+        weeklyDistance= (TextView) findViewById(R.id.weeklyDistanceText);
+        weeklyTime = (TextView) findViewById(R.id.weeklyTimeText);
+        weeklyWorkoutCount = (TextView) findViewById(R.id.weeklyWorkoutsText);
+        weeklyCalories = (TextView) findViewById(R.id.weeklyCaloriesBurnedText);
 
-        totalDistance= (TextView) findViewById(R.id.totalDistance_view);
-        totalTime = (TextView) findViewById(R.id.totalTime_view);
-        totalWorkoutCount = (TextView) findViewById(R.id.totalWorkoutCount_view);
-        totalCalories = (TextView) findViewById(R.id.totalCalories_view);
+        totalDistance= (TextView) findViewById(R.id.allTimeDistanceText);
+        totalTime = (TextView) findViewById(R.id.allTimeTimeText);
+        totalWorkoutCount = (TextView) findViewById(R.id.allTimeWorkoutsText);
+        totalCalories = (TextView) findViewById(R.id.allTimeCaloriesBurnedText);
 
         newUser = new UserInfo();
+        userData = new UserWorkoutData();
         database = new DBHandler(this);
         handler = new Handler();
         //database.open();

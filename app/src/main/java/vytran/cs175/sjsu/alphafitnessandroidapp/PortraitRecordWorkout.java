@@ -56,7 +56,7 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
     private TextView updateTime;
 
     private WatchTime watchTime;
-    private long beginTime, timeInMilliseconds = 0L;
+    public long beginTime, timeInMilliseconds = 0L;
 
     private Handler handler;
     private UserWorkoutData userData;
@@ -64,11 +64,11 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private Context context;
-    private boolean isRunning = false;
+    public static boolean isRunning = false;
 
     SensorManager sensorManager;
     Sensor stepSensor;
-    private long stepsCount = 0;
+    private int stepsCount = 0;
     private int workoutCount = 0;
 
     private ArrayList<LatLng> locationsList;

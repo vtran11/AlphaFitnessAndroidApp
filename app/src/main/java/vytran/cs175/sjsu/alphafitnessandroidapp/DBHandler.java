@@ -74,7 +74,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(USER_GENDER, task.getUserGender());
         values.put(USER_WEIGHT, task.getUserWeight());
 
-        long putID = db.insert(USERS_INFO_TABLE, null, values);
+        int putID = (int) db.insert(USERS_INFO_TABLE, null, values);
         task.setUserId(putID);
 
         db.close();
@@ -108,7 +108,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
 
         UserInfo task = new UserInfo(
-                Long.parseLong(cursor.getString(0)),
+                Integer.getInteger(cursor.getString(0)),
                 cursor.getString(1),
                 cursor.getString(2),
                 Float.parseFloat(cursor.getString(3)));
@@ -139,7 +139,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 UserInfo task = new UserInfo();
-                task.setUserId(cursor.getLong(0));
+                task.setUserId(cursor.getInt(0));
                 task.setUserName(cursor.getString(1));
                 task.setUserGender(cursor.getString(2));
                 task.setUserWeight(cursor.getFloat(3));
@@ -165,7 +165,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(WEEKLY_NUMWORKOUTS, task.getWeeklyWorkoutCount());
         values.put(WEEKLY_CALORIES, task.getWeeklyCalories());
 
-        long putID = db.insert(USER_WORKOUT_TABLE, null, values);
+        int putID = (int) db.insert(USER_WORKOUT_TABLE, null, values);
         task.setUserDataId(putID);
 
         db.close();
@@ -199,7 +199,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext() && count < 7) {
                 UserWorkoutData task = new UserWorkoutData();
-                task.setUserDataId((cursor.getLong(cursor.getColumnIndex(DBHandler.USER_ID))));
+                task.setUserDataId((cursor.getInt(cursor.getColumnIndex(DBHandler.USER_ID))));
                 task.setWeeklyDistance(cursor.getFloat(cursor.getColumnIndex(DBHandler.WEEKLY_DISTANCE)));
                 task.setWeeklyTime(cursor.getFloat(cursor.getColumnIndex(DBHandler.WEEKLY_TIME)));;
                 task.setWeeklyWorkoutCount(cursor.getFloat(cursor.getColumnIndex(DBHandler.WEEKLY_NUMWORKOUTS)));
@@ -226,7 +226,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 UserWorkoutData task = new UserWorkoutData();
-                task.setUserDataId((cursor.getLong(cursor.getColumnIndex(DBHandler.USER_ID))));
+                task.setUserDataId((cursor.getInt(cursor.getColumnIndex(DBHandler.USER_ID))));
                 task.setWeeklyDistance(cursor.getFloat(cursor.getColumnIndex(DBHandler.WEEKLY_DISTANCE)));
                 task.setWeeklyTime(cursor.getFloat(cursor.getColumnIndex(DBHandler.WEEKLY_TIME)));
                 task.setWeeklyWorkoutCount(cursor.getFloat(cursor.getColumnIndex(DBHandler.WEEKLY_NUMWORKOUTS)));
@@ -238,5 +238,38 @@ public class DBHandler extends SQLiteOpenHelper {
 
         cursor.close();
         return AllUserData;
+    }
+
+    //Get distance for current user workout
+    public double getCurrentDistance(int id){
+       double distance = 0;
+       SQLiteDatabase database = this.getWritableDatabase();
+       Cursor cursor = database.rawQuery("SELECT * FROM " + USER_WORKOUT_TABLE + " WHERE "+ USER_ID +
+       "=" + Integer.toString(id), null);
+       cursor.moveToFirst();
+
+       if(cursor.getCount() >0 ){
+           distance = cursor.getDouble(cursor.getColumnIndex(WEEKLY_DISTANCE));
+       }
+
+       cursor.close();
+       return distance;
+    }
+
+
+    //Get distance for current user workout
+    public double getCurrentTime(int id){
+        double time = 0;
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_WORKOUT_TABLE + " WHERE "+ USER_ID +
+                "=" + Integer.toString(id), null);
+        cursor.moveToFirst();
+
+        if(cursor.getCount() >0 ){
+            time = cursor.getLong(cursor.getColumnIndex(WEEKLY_TIME));
+        }
+
+        cursor.close();
+        return time;
     }
 }

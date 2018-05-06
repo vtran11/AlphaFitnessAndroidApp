@@ -5,7 +5,7 @@ package vytran.cs175.sjsu.alphafitnessandroidapp;
  */
 
 public class UserWorkoutData {
-    private long UserId;
+    private int UserId;
     private float user_WeeklyDistance;
     private float user_WeeklyTime;
     private float WorkoutCount_Weekly;
@@ -14,11 +14,11 @@ public class UserWorkoutData {
     public UserWorkoutData() {}
 
 
-    public void setUserDataId(long Id) {
+    public void setUserDataId(int Id) {
         this.UserId = Id;
     }
 
-    public long getUserDataId() {
+    public int getUserDataId() {
         return UserId;
     }
 

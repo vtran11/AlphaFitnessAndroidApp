@@ -41,7 +41,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserProfileButton"></activity>
+        <activity android:name=".UserProfileButton"
+            android:label="User Profile"
+            android:theme="@style/ActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainRecordWorkout" />
+        </activity>
     </application>
 
     <uses-feature android:name="android.hardware.sensor.stepcounter" />

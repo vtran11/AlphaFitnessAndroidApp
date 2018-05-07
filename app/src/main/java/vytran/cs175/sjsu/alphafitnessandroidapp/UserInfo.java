@@ -31,9 +31,4 @@ public class UserInfo {
     public void setUserWeight(float weight) {myWeight = weight;}
     public float getUserWeight() {return myWeight;}
 
-    public String toString() {
-        return "Username: " + getUserName() + "\n" +
-                "Gender: " + getUserGender() + "\n" +
-                "Weight: " + getUserWeight();
-    }
 }

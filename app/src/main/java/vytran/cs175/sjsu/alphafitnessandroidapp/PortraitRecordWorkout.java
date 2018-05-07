@@ -137,8 +137,6 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                     beginTime = SystemClock.uptimeMillis();
                     workoutButton.setBackgroundColor(Color.RED);
                     startTimer(view);
-                    //watchTime.setStartTime(SystemClock.uptimeMillis());
-                    //handler.postDelayed(updateTimerRunnable, 0);
                     handler.postDelayed(updateLocationRunnable, 20);
                     handler.removeCallbacks(updateDBHandler);
                 }
@@ -150,9 +148,6 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
                     workoutButton.setBackgroundColor(Color.GREEN);
                     stopTimer(view);
                     resetTimer(view);
-                    //onStop();
-                    //watchTime.addStoredTime(timeInMilliseconds);
-                    //handler.removeCallbacks(updateTimerRunnable);
                     handler.postDelayed(updateDBHandler, 0);
                     handler.removeCallbacks(updateLocationRunnable);
                 }
@@ -217,8 +212,6 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
     }
 
 
-
-
     //---------------------- Workout time handler ----------------------------
     public void startTimer(View view){
         watchTime.setStartTime(SystemClock.uptimeMillis());
@@ -240,7 +233,6 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
             int hours = all_minutes/60;
             int minutes = all_minutes - hours*60;
             int seconds = time % 60;
-            int milliseconds = (int) (watchTime.getTimeUpdate() % 1000);
 
             //display the time in the tex view
             if(hours <=0){
@@ -270,8 +262,7 @@ public class PortraitRecordWorkout extends Fragment implements OnMapReadyCallbac
         timeInMilliseconds = 0L;
         int minutes = 0;
         int seconds = 0;
-        int milliseconds = 0;
-        int hours = 0;
+
 
         updateTime.setText(String.format("%02d", minutes) + ":"
                 + String.format("%02d", seconds));

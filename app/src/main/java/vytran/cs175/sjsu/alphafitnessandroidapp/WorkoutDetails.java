@@ -1,26 +1,20 @@
 package vytran.cs175.sjsu.alphafitnessandroidapp;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.Entry;
-
-import org.w3c.dom.Text;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.text.DateFormat;
-import android.graphics.Color;
 
 
 public class WorkoutDetails extends Fragment {

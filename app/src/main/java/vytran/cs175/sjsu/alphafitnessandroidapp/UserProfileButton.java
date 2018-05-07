@@ -6,8 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class UserProfileButton extends AppCompatActivity {
 
@@ -15,6 +20,8 @@ public class UserProfileButton extends AppCompatActivity {
     private DBHandler database;
     UserInfo newUser;
     UserWorkoutData userData;
+    private DecimalFormat decimal;
+
     long userID = 0;
     private TextView userName;
     private Spinner userGender;
@@ -29,6 +36,19 @@ public class UserProfileButton extends AppCompatActivity {
     private TextView totalTime;
     private TextView totalWorkoutCount;
     private TextView totalCalories;
+
+    private float allTimeData;
+    private float weeklyTimeData;
+
+    private float weekly_distance_text = 0;
+    private float weekly_time_text = 0;
+    private int weekly_workoutCount_text = 0;
+    private float weekly_calories_text = 0;
+
+    private float total_distance_text = 0;
+    private float total_time_text = 0;
+    private int total_workoutCount_text = 0;
+    private float total_calories_text = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +73,50 @@ public class UserProfileButton extends AppCompatActivity {
         userData = new UserWorkoutData();
         database = new DBHandler(this);
         handler = new Handler();
-        //database.open();
-        //database.getWritableDatabase();
+
+
+        weeklyTimeData = userData.getWeeklyTime();
+
+        decimal = new DecimalFormat("#.###");
+
+        //------------------------ Set Weekly Data ------------------------------
+        List<UserWorkoutData> weekly_data;
+        weekly_data = database.getAllWeeklyUserData();
+
+        for(UserWorkoutData data: weekly_data){
+            weekly_distance_text += data.getWeeklyDistance();
+            weekly_time_text += data.getWeeklyTime();
+            weekly_workoutCount_text = (int) data.getWeeklyWorkoutCount();
+            weekly_calories_text += data.getWeeklyCalories();
+        }
+
+        int sec = (int) weekly_time_text*60;
+
+        weeklyDistance.setText( String.format(java.util.Locale.US,"%.3f",weekly_distance_text) + " miles");
+        weeklyTime.setText(sec/3600 + " Hrs " + (sec%3600)/60 + " Mins " + sec + " Secs ");
+        weeklyCalories.setText(String.valueOf(weekly_workoutCount_text) + " times");
+        weeklyCalories.setText(String.format(java.util.Locale.US,"%.2f",weekly_calories_text) + " calories");
+
+
+        //------------------------ Set All Time Data ------------------------------
+        List<UserWorkoutData> total_data;
+        total_data = database.getAllUserData();
+
+        for(UserWorkoutData data: total_data){
+            total_distance_text += data.getWeeklyDistance();
+            total_time_text += data.getWeeklyTime();
+            total_workoutCount_text = (int) data.getWeeklyWorkoutCount();
+            total_calories_text += data.getWeeklyCalories();
+        }
+
+        int second = (int) total_time_text*60;
+
+        totalDistance.setText( String.format(java.util.Locale.US,"%.3f",total_distance_text) + " miles");
+        totalTime.setText(second/3600 + " Hrs " + (second%3600)/60 + " Mins " + second + " Secs ");
+        totalWorkoutCount.setText(String.valueOf(total_workoutCount_text) + " times");
+        totalCalories.setText(String.format(java.util.Locale.US,"%.2f",total_calories_text) + " calories");
+
+
 
 
         //--------------  SET UP SPINNER FOR GENDER  -----------------
@@ -81,110 +143,27 @@ public class UserProfileButton extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
 
-        //setUserInfo();
-
-        //------------------- SET UP USER INFO ---------------------
-     /*   newUser.setUserName(userName.getText().toString());
-        newUser.setUserGender(userGender.getSelectedItem().toString());
-        newUser.setUserWeight(Float.parseFloat(userWeight.getText().toString()));
-        database.addUsers(newUser);
-*/
-
-        //-------------------- Get Weekly Workout Info ----------------------
-
-        //handler.postDelayed(getWeekly_WorkoutData, 30);
-        //handler.postDelayed(getAllTime_WorkoutData, 30);
-
     }
 
-    private void setUserInfo(){
-       UserInfo currentUser = database.getUser(1);
 
-        if(currentUser != null){
-            userName.setText(currentUser.getUserName());
-            if(currentUser.getUserGender().contains("Male"))
-                userGender.setSelection(0);
-            else if(currentUser.getUserGender().contains("Female"))
-                userGender.setSelection(1);
-            else
-                userGender.setSelection(2);
+    //-------------- Menu Items for Edit/Save current Profile Data --------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_user_profile, menu);
 
-            userWeight.setText(String.valueOf(currentUser.getUserWeight()));
-        }
-    }
-    /*
-    public void saveUserInfo(View view){
-        String gender = String.valueOf(userGender.getSelectedItem());
-        String name = userName.getText().toString();
-        Float weight = Float.parseFloat(userWeight.getText().toString());
-
-        if(!userName.getText().toString().isEmpty()){
-            newUser.setUserName(name);
-        }
-
-        newUser.setUserGender(gender);
-
-        if(!userWeight.getText().toString().isEmpty()){
-            newUser.setUserWeight(weight);
-        }
-
-        database.addUsers(newUser);
-
-    }*/
-
-/*
-    private Runnable getWeekly_WorkoutData = new Runnable() {
-        @Override
-        public void run() {
-            List<UserWorkoutData> weeklyWorkoutData;
-            weeklyWorkoutData = database.getAllWeeklyUserData();
-
-            float totalDistance = 0;
-            float totalTime = 0;
-            int totalWorkouts = 0;
-            float totalCalories = 0;
-
-            for (UserWorkoutData data: weeklyWorkoutData) {
-                //distance
-                totalDistance += data.getWeeklyDistance();
-                //time
-                totalTime += data.getWeeklyTime();
-                //workouts
-                totalWorkouts = (int) data.getWeeklyWorkoutCount();
-                //calories
-                totalCalories += data.getWeeklyCalories();
-            }
-
-            String timeInString = timeToString( (int) totalTime);
-
-            String distance = String.format(java.util.Locale.US,"%.2f",totalDistance) + " miles";
-            String workouts = String.valueOf(totalWorkouts) + " times";
-            String calories = String.format(java.util.Locale.US,"%.2f",totalCalories) + " calories";
-
-            weeklyDistance.setText(distance);
-            weeklyTime.setText(timeInString);
-            weeklyWorkoutCount.setText(workouts);
-            weeklyCalories.setText(calories);
-        }
-    };
-
-
-    private String timeToString (int mins) {
-        int seconds = mins * 60;
-
-        int minutes = (seconds % 3600) / 60;
-        int hours = seconds / 3600;
-        int days = seconds / 86400;
-        seconds = (seconds % 3600) % 60;
-
-        return days + " day " + hours + " hr " + minutes + " min " + seconds + " sec";
+        return true;
     }
 
-    private Runnable getAllTime_WorkoutData = new Runnable() {
-        @Override
-        public void run() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.editData:
 
         }
-    };
-*/
+
+        return true;
+    }
+
+
 }

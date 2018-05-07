@@ -272,4 +272,14 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         return time;
     }
+
+    //DELETE A SPECIFIC TASK FROM THE DATABASE
+    public void deleteUserData (UserWorkoutData task){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //delete the table row
+        db.delete(USER_WORKOUT_TABLE, USER_ID + " = ?",
+                new String[]{String.valueOf(task.getUserDataId())});
+        db.close();
+    }
 }

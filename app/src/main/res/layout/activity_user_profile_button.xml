@@ -18,10 +18,10 @@
         android:elevation="2dp" />
 
     <TextView
-        android:id="@+id/nameText"
+        android:id="@+id/uneditedName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User's Name"
+        android:text="Vy"
         android:textSize="32dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:layout_marginStart="8dp"
@@ -32,7 +32,7 @@
         app:layout_constraintStart_toEndOf="@+id/profileButton"/>
 
     <EditText
-        android:id="@+id/nameEdit"
+        android:id="@+id/editedName"
         android:text="Name"
         android:textSize="32dp"
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/profileButton"
-        app:layout_constraintStart_toStartOf="@+id/nameText"
+        app:layout_constraintStart_toStartOf="@+id/uneditedName"
         app:layout_constraintTop_toTopOf="@+id/profileButton" />
 
 
@@ -60,8 +60,8 @@
         app:layout_constraintTop_toBottomOf="@+id/profileButton" />
 
     <TextView
-        android:id="@+id/genderText"
-        android:text="gender"
+        android:id="@+id/uneditedGender"
+        android:text="Female"
         android:textSize="19dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,8 +97,8 @@
         app:layout_constraintStart_toEndOf="@+id/genderSpinner"/>
 
     <TextView
-        android:id="@+id/weightText"
-        android:text="weight"
+        android:id="@+id/uneditedWeight"
+        android:text="115"
         android:textSize="17dp"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
         app:layout_constraintStart_toEndOf="@+id/weight" />
 
     <EditText
-        android:id="@+id/weightEdit"
+        android:id="@+id/editedWeight"
         android:text="115"
         android:textSize="19dp"
         android:layout_width="50dp"
@@ -132,9 +132,9 @@
         android:layout_marginBottom="8dp"
         android:text="lbs."
         android:textSize="17dp"
-        app:layout_constraintBottom_toBottomOf="@+id/weightText"
-        app:layout_constraintStart_toEndOf="@+id/weightText"
-        app:layout_constraintTop_toTopOf="@+id/weightText" />
+        app:layout_constraintBottom_toBottomOf="@+id/uneditedWeight"
+        app:layout_constraintStart_toEndOf="@+id/uneditedWeight"
+        app:layout_constraintTop_toTopOf="@+id/uneditedWeight" />
 
 
     <LinearLayout
